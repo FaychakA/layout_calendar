@@ -1,3 +1,77 @@
+$days: (
+  0: "mon",
+  1: "tue",
+  2: "wen",
+  3: "thu",
+  4: "fri",
+  5: "sat",
+  6: "sun"
+);
+$size: 100px;
+$block-gap: 1px;
+$day-in-month: (
+  feb-days: 28,
+  leap-feb-days: 29,
+  even-days: 30,
+  odd-days: 31,
+);
+
 body {
   margin: 0;
+}
+
+.calendar {
+  display: flex;
+  max-width: ($size + $block-gap)*7;
+  margin: 100px auto;
+
+  div {
+    width: $size;
+    height: $size;
+    background: #eee;
+    border: 1px solid black;
+    box-sizing: border-box;
+    margin: $block-gap $block-gap 0 0;
+    display: none;
+
+    &::after {
+      line-height: $size;
+      font-family: Arial, serif;
+      font-size: 30px;
+    }
+
+    &:hover {
+      background-color: pink;
+      cursor: pointer;
+      transform: translateY(-20px);
+      transition: 1s;
+    }
+
+  }
+
+  @for $i from 1 through 31 {
+    &-#{$i} {
+      display: flex;
+      flex-wrap: wrap;
+      @for $j from 1 through $i {
+        div:nth-child(#{$j}) {
+          display: block;
+        }
+        & div:nth-child(#{$j})::after {
+          content: "#{$j}";
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  @each $key, $day in $days {
+    &-#{$day} {
+      & div:nth-child(1) {
+        margin-left: $key * ($size + $block-gap);
+      }
+    }
+  }
+
 }
